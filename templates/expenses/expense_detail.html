@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ expense.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{{ expense.title }}</h2>
+    <table>
+        <tr><th>Сумма</th><td>{{ expense.amount }}</td></tr>
+        <tr><th>Категория</th><td>{{ expense.get_category_display }}</td></tr>
+        <tr><th>Способ оплаты</th><td>{{ expense.get_payment_method_display }}</td></tr>
+        <tr><th>Дата расхода</th><td>{{ expense.date|date:"d.m.Y" }}</td></tr>
+        <tr><th>Комментарий</th><td>{{ expense.comment|default:"—" }}</td></tr>
+        <tr><th>Запись создана</th><td>{{ expense.created_at|date:"d.m.Y H:i" }}</td></tr>
+    </table>
+    <br>
+    <a href="{% url 'expense_update' expense.pk %}" class="btn">Изменить</a>
+    <a href="{% url 'expense_delete' expense.pk %}" class="btn btn-danger">Удалить</a>
+    <a href="{% url 'expense_list' %}" class="btn btn-secondary">Назад к списку</a>
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if object %}Редактирование расхода{% else %}Новый расход{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>{% if object %}Редактирование расхода{% else %}Новый расход{% endif %}</h2>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            {{ form.non_field_errors }}
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-row">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn">Сохранить</button>
+        <a href="{% url 'expense_list' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои расходы{% endblock %}
+
+{% block content %}
+<h1>Мои расходы</h1>
+<div class="card">
+    <form method="get">
+        <div class="filters">
+            {% for field in filter_form %}
+                <div class="form-row">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {{ field.errors }}
+                </div>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn">Применить</button>
+        <a href="{% url 'expense_list' %}" class="btn btn-secondary">Сбросить фильтры</a>
+    </form>
+</div>
+<div class="card summary">
+    <div>Найдено записей: <strong>{{ total_count }}</strong></div>
+    <div>Общая сумма: <strong>{{ total_sum }}</strong></div>
+</div>
+<div class="card">
+    {% if expenses %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Название</th>
+                    <th>Категория</th>
+                    <th>Оплата</th>
+                    <th>Сумма</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense.date|date:"d.m.Y" }}</td>
+                        <td><a href="{% url 'expense_detail' expense.pk %}">{{ expense.title }}</a></td>
+                        <td>{{ expense.get_category_display }}</td>
+                        <td>{{ expense.get_payment_method_display }}</td>
+                        <td>{{ expense.amount }}</td>
+                        <td>
+                            <a href="{% url 'expense_update' expense.pk %}">Изменить</a> |
+                            <a href="{% url 'expense_delete' expense.pk %}">Удалить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        {% if filters_applied %}
+            <p>По вашему запросу расходов не найдено. Попробуйте изменить или сбросить фильтры.</p>
+        {% else %}
+            <p>У вас пока нет расходов. <a href="{% url 'expense_create' %}">Добавьте первый!</a></p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

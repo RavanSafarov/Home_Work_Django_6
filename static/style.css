@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Nunito:wght@400;600;800&display=swap');
+
+:root {
+    --paper: #fdf8ee;
+    --ink: #3a3550;          /* цвет «карандаша» */
+    --muted: #8a8399;
+    --blue: #6ec6f5;
+    --green: #8fd694;
+    --yellow: #ffd95e;
+    --orange: #ffab6b;
+    --pink: #ff8fab;
+    --purple: #b79cf2;
+    --red: #ff6b7f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Nunito', sans-serif;
+    color: var(--ink);
+    background-color: var(--paper);
+    background-image:
+        /* акварельные кляксы по фону */
+        radial-gradient(420px 320px at 8% 12%,  rgba(110, 198, 245, .38), transparent 70%),
+        radial-gradient(380px 300px at 92% 8%,  rgba(255, 143, 171, .34), transparent 70%),
+        radial-gradient(460px 340px at 85% 88%, rgba(255, 217, 94, .38),  transparent 70%),
+        radial-gradient(420px 320px at 12% 92%, rgba(143, 214, 148, .36), transparent 70%),
+        radial-gradient(300px 240px at 50% 50%, rgba(183, 156, 242, .14), transparent 70%),
+        /* фактура бумаги */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.3 0 0 0 0.09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
+}
+
+/* ---------- Заголовки ---------- */
+h1, h2 {
+    font-family: 'Caveat', cursive;
+    font-weight: 700;
+    margin: 0 0 18px;
+    line-height: 1.1;
+}
+h1 {
+    display: inline-block;
+    font-size: 3.2rem;
+    padding: 0 8px;
+    transform: rotate(-1.5deg);
+    /* закраска маркером */
+    background: linear-gradient(transparent 58%, rgba(255, 217, 94, .85) 58%, rgba(255, 217, 94, .85) 92%, transparent 92%);
+}
+h2 { font-size: 2.2rem; }
+
+a { color: #3f8fd2; text-decoration: none; font-weight: 600; transition: .2s; }
+a:hover { color: var(--pink); }
+
+p { line-height: 1.6; }
+
+/* ---------- Навигация ---------- */
+.navbar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 30px 20px;
+    background: rgba(255, 255, 255, .6);
+}
+/* полоска из «красок» */
+.navbar::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 8px;
+    background: linear-gradient(90deg,
+        var(--red) 0 16.6%, var(--orange) 0 33.3%, var(--yellow) 0 50%,
+        var(--green) 0 66.6%, var(--blue) 0 83.3%, var(--purple) 0);
+    opacity: .85;
+    border-radius: 0 0 8px 8px;
+}
+.navbar > a {
+    font-family: 'Caveat', cursive;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+.navbar > a:hover { color: var(--pink); }
+.navbar > div { display: flex; align-items: center; gap: 4px; }
+
+.navbar span {
+    padding: 4px 14px;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    background: rgba(255, 217, 94, .6);
+    font-weight: 800;
+}
+.navbar div a,
+.navbar button {
+    margin-left: 10px;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 999px;
+    background: none;
+    color: var(--ink);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s;
+}
+.navbar div a:hover,
+.navbar button:hover {
+    background: rgba(110, 198, 245, .4);
+    color: var(--ink);
+    transform: rotate(-2deg);
+}
+
+/* ---------- Контейнер ---------- */
+.container {
+    max-width: 980px;
+    margin: 32px auto;
+    padding: 0 18px;
+}
+
+/* ---------- Карточки-листы бумаги ---------- */
+.card {
+    position: relative;
+    margin-bottom: 26px;
+    padding: 26px 28px;
+    background: rgba(255, 255, 255, .78);
+    border: 2.5px solid var(--ink);
+    border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px;
+    box-shadow: 6px 7px 0 rgba(58, 53, 80, .12);
+    overflow: hidden;
+    animation: appear .5s ease both;
+}
+/* пятно акварели в углу карточки */
+.card::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(110, 198, 245, .5), transparent 70%);
+    pointer-events: none;
+}
+.card:nth-of-type(3n+2)::before { background: radial-gradient(circle, rgba(255, 143, 171, .5), transparent 70%); }
+.card:nth-of-type(3n)::before   { background: radial-gradient(circle, rgba(143, 214, 148, .55), transparent 70%); }
+.card:nth-of-type(odd)  { transform: rotate(-.35deg); }
+.card:nth-of-type(even) { transform: rotate(.3deg); }
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(16px) rotate(-1deg); }
+}
+
+/* ---------- Сводка: цветные пятна гуаши ---------- */
+.summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+    overflow: visible;
+    transform: none !important;
+}
+.summary::before { display: none; }
+.summary > div {
+    padding: 22px 26px;
+    font-weight: 700;
+    border: 2.5px solid var(--ink);
+    border-radius: 60% 40% 55% 45% / 45% 55% 45% 55%;
+    box-shadow: 5px 6px 0 rgba(58, 53, 80, .15);
+    text-align: center;
+    transition: transform .3s;
+}
+.summary > div:hover { transform: rotate(-2deg) scale(1.03); }
+.summary > div:first-child { background: rgba(110, 198, 245, .6); }
+.summary > div:last-child  { background: rgba(255, 217, 94, .75); }
+.summary strong {
+    display: block;
+    font-family: 'Caveat', cursive;
+    font-size: 3rem;
+    line-height: 1.1;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th {
+    padding: 8px 12px;
+    text-align: left;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    border-bottom: 3px solid var(--ink);
+}
+td {
+    padding: 13px 12px;
+    text-align: left;
+    border-bottom: 2px dashed rgba(58, 53, 80, .25);
+}
+tbody tr { transition: .2s; }
+tbody tr:nth-child(5n+1):hover { background: rgba(110, 198, 245, .3); }
+tbody tr:nth-child(5n+2):hover { background: rgba(255, 143, 171, .28); }
+tbody tr:nth-child(5n+3):hover { background: rgba(255, 217, 94, .4); }
+tbody tr:nth-child(5n+4):hover { background: rgba(143, 214, 148, .35); }
+tbody tr:nth-child(5n):hover   { background: rgba(183, 156, 242, .3); }
+tbody tr td:nth-child(5) { font-weight: 800; font-size: 1.05rem; }
+
+
+.btn {
+    display: inline-block;
+    padding: 9px 22px;
+    background: var(--blue);
+    color: var(--ink);
+    border: 2.5px solid var(--ink);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 3px 4px 0 var(--ink);
+    font: inherit;
+    font-weight: 800;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+}
+.btn:hover {
+    color: var(--ink);
+    transform: translate(-2px, -2px) rotate(-1.5deg);
+    box-shadow: 5px 6px 0 var(--ink);
+}
+.btn:active {
+    transform: translate(2px, 3px);
+    box-shadow: 1px 1px 0 var(--ink);
+}
+.btn-danger    { background: var(--pink); }
+.btn-secondary { background: var(--yellow); }
+
+form .btn { margin: 8px 8px 0 0; }
+
+
+.form-row { margin-bottom: 18px; }
+.form-row label {
+    display: block;
+    margin-bottom: 4px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+.form-row input,
+.form-row select,
+.form-row textarea {
+    width: 100%;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, .85);
+    color: var(--ink);
+    border: 2px solid var(--ink);
+    border-radius: 14px 10px 16px 10px;
+    font: inherit;
+    transition: .2s;
+}
+.form-row input:focus,
+.form-row select:focus,
+.form-row textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: #3f8fd2;
+    box-shadow: 0 0 0 5px rgba(110, 198, 245, .45);
+}
+.form-row small { display: block; margin-top: 6px; color: var(--muted); font-size: .82rem; }
+.form-row small ul { margin: 4px 0 0; padding-left: 18px; }
+
+.errorlist {
+    list-style: none;
+    margin: 6px 0 0;
+    padding: 6px 12px;
+    background: rgba(255, 107, 127, .22);
+    border-left: 5px solid var(--red);
+    border-radius: 4px 14px 14px 4px;
+    color: #b3243a;
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+.messages { list-style: none; margin: 0 0 24px; padding: 0; }
+.messages li {
+    margin-bottom: 10px;
+    padding: 12px 20px;
+    background: rgba(143, 214, 148, .55);
+    border: 2.5px solid var(--ink);
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    font-weight: 700;
+    animation: wiggle .6s ease both;
+}
+@keyframes wiggle {
+    0%   { opacity: 0; transform: translateY(-14px) rotate(-2deg); }
+    60%  { transform: translateY(2px) rotate(1deg); }
+    100% { opacity: 1; transform: none; }
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 14px;
+    align-items: end;
+}
+
+::selection { background: var(--yellow); color: var(--ink); }
+
+@media (max-width: 720px) {
+    .navbar { flex-direction: column; gap: 8px; }
+    h1 { font-size: 2.4rem; }
+    .card { padding: 18px; border-radius: 30px 12px 28px 12px / 12px 28px 12px 30px; overflow-x: auto; }
+    table { min-width: 560px; }
+}
